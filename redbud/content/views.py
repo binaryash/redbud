@@ -7,11 +7,11 @@ from django.db.models import Q
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 
-from .models import Content
-from .serializers import ContentSerializer, ContentListSerializer, ContentSummarySerializer
-from .permissions import IsManagerOrTrainerForContent
+from content.models import Content
+from content.serializers import ContentSerializer, ContentListSerializer, ContentSummarySerializer
+from content.permissions import IsManagerOrTrainerForContent
 from users.models import Training
-from .gemini_service import get_gemini_service
+from content.gemini_service import get_gemini_service
 
 
 @extend_schema_view(
