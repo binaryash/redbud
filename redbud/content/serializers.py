@@ -65,7 +65,7 @@ class ContentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
         fields = ['id', 'training', 'training_name', 'title', 'content_type',
-                  'content_type_display', 'order', 'created_by_name', 'created_at']
+                  'content_type_display', 'order', 'is_active', 'created_by_name', 'created_at']
 
 
 
