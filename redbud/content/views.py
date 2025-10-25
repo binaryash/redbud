@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from django.db.models import Q
+from rest_framework.exceptions import PermissionDenied  # ✅ Add this
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from drf_spectacular.types import OpenApiTypes
 
@@ -62,7 +62,7 @@ class ContentViewSet(viewsets.ModelViewSet):
         elif user.role == 'trainer':
             training_ids = Training.objects.filter(assigned_trainer=user).values_list('id', flat=True)
             return Content.objects.filter(training_id__in=training_ids)
-        else:
+        else:  # trainee or other roles
             training_ids = user.trainings.values_list('id', flat=True)
             return Content.objects.filter(training_id__in=training_ids, is_active=True)
 
@@ -71,10 +71,7 @@ class ContentViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         if user.role == 'trainer' and training.assigned_trainer != user:
-            return Response(
-                {'error': 'You can only add content to your assigned trainings'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            raise PermissionDenied('You can only add content to your assigned trainings')  # ✅ Fixed
 
         serializer.save(created_by=self.request.user)
 
@@ -149,21 +146,6 @@ class ContentViewSet(viewsets.ModelViewSet):
         content.save()
         serializer = self.get_serializer(content)
         return Response(serializer.data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Add this method to your ContentViewSet class
 
     @extend_schema(
         summary="Summarize content",
