@@ -147,3 +147,33 @@ dist-ssr
 *.sw?
 
 openapi.yaml
+
+
+# uv package manager
+#
+# Ignore virtual environment directory
+.uv/
+
+# Ignore any cached files or temporary directories
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+
+# Ignore local package management files (if using any)
+*.lock
+
+# Ignore test and coverage directories
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
+
+# Ignore other generated files
+*.log
+*.bak
+*.swp
+*.swo
